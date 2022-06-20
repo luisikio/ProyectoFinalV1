@@ -5,25 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-     private Rigidbody2D _rigidbody2D;
-        private SpriteRenderer _renderer;
-        private Animator _animator;
-       
+    private Rigidbody2D _rigidbody2D;
+    private SpriteRenderer _renderer;
+    private Animator _animator;
+  
+    public float velocity = 10;
         
-        public float JumpForce = 10;
-        public float velocity = 10;
+    private static readonly int right = 1;
+    private static readonly int left = -1;
         
-        private static readonly int right = 1;
-        private static readonly int left = -1;
-        
-          
-        private static readonly int Animation_idle = 0;
-        private static readonly int Animation_run = 1;
-        
+         
+    private static readonly int Animation_idle = 0;
+    private static readonly int Animation_run = 1;
+
+    private Puntajes Scors;
+
     void Start()
-    { _rigidbody2D = GetComponent<Rigidbody2D>();
+    { 
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
+        Scors = FindObjectOfType<Puntajes>();
     }
 
     // Update is called once per frame
@@ -41,7 +43,7 @@ public class PlayerController : MonoBehaviour
         }
         if(Input.GetKeyUp(KeyCode.Space))
         {
-            _rigidbody2D.AddForce(Vector2.up*JumpForce,ForceMode2D.Impulse);
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 10);
         }
     }
     private void Desplazarse(int position)
@@ -67,13 +69,27 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("SegundEcena");
         }
     }
-    private void OnTriggerStay(Collider other)
+
+
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        var tag = other.gameObject.tag;
+        var tag = collision.gameObject.tag;
         Debug.Log(tag);
         if (tag == "Escalable" && Input.GetKey(KeyCode.UpArrow))
         {
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 10);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Enemigo"))
+        {
+            Scors.MenosVida(1);
+        }
+        if (other.gameObject.CompareTag("Moneda"))
+        {
+            Scors.SumMonedas(1);
         }
     }
 
