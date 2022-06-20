@@ -19,6 +19,11 @@ public class PlayerController : MonoBehaviour
           
         private static readonly int Animation_idle = 0;
         private static readonly int Animation_run = 1;
+        private static readonly int Animation_jump = 2;
+        private static readonly int Animation_ataque = 3;
+        private static readonly int Animation_escalar = 4;
+        private static readonly int Animation_dead = 5;
+       
         
     void Start()
     { _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -33,15 +38,22 @@ public class PlayerController : MonoBehaviour
         ChangeAnimation(Animation_idle);
         if (Input.GetKey(KeyCode.RightArrow))
         {
+            ChangeAnimation(Animation_run);
             Desplazarse(right);
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
+            ChangeAnimation(Animation_run);
             Desplazarse(left);
+        }
+        if (Input.GetKey(KeyCode.C))
+        {
+            ChangeAnimation(Animation_ataque);
         }
         if(Input.GetKeyUp(KeyCode.Space))
         {
             _rigidbody2D.AddForce(Vector2.up*JumpForce,ForceMode2D.Impulse);
+            ChangeAnimation(Animation_jump);
         }
     }
     private void Desplazarse(int position)
@@ -65,6 +77,12 @@ public class PlayerController : MonoBehaviour
         if (tag == "Nivel2")
         {
             SceneManager.LoadScene("SegundEcena");
+        }
+        if (tag == "MonedaOro")
+        {
+            
+            Destroy(other.gameObject);
+
         }
     }
     private void OnTriggerStay(Collider other)

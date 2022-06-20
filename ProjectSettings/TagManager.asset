@@ -9,6 +9,7 @@ TagManager:
   - Escalable
   - Pinchos2
   - Limite
+  - MonedaOro
   layers:
   - Default
   - TransparentFX
