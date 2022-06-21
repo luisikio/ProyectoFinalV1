@@ -16,5 +16,6 @@ public class CameraController : MonoBehaviour
         var x = jugador.position.x + 2f;
         var y = jugador.position.y + 2f;
         transform.position = new Vector3(x, y, transform.position.z);
+        //hola mundo
     }
 }
